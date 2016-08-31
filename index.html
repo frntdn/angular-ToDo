@@ -1,0 +1,136 @@
+<!doctype html>
+<html ng-app="purchaseApp">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<style>
+    
+    /*Правильная форма*/
+    input.ng-valid {
+
+    }
+
+    /*Плохая форма*/
+    input.ng-invalid {
+        background-color: red;
+    }
+
+    /*Целомудренная форма*/
+    input.ng-pristine{
+        border: dotted;
+    }
+
+    /*Пользованная форма*/
+    input.ng-dirty{
+        border: dashed;
+    }
+
+    .hideBtn {
+        display: none;
+    }
+
+</style>
+</head>
+<body ng-controller="purchaseController">
+    
+    <div class="page-header">
+        <h1> ToDo список </h1>
+    </div>
+
+    <div class="panel">
+        <div ng-if="!state">
+            <form class="form-inline" novalidate name="addItemForm" ng-submit="addItem()">
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input class="form-control" name="myInput" ng-model="editedItem.text" placeholder="Название" add-item-form-directive/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" ng-model="editedItem.date" placeholder="Дата" add-item-form-directive/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                        <select name="" class="form-control" placeholder="Ответственный" ng-model="editedItem.worker" add-item-form-directive>
+                            <option value="Джон">Джон</option>
+                            <option value="Иван">Иван</option>
+                            <option value="Джэк">Джэк</option> 
+                        </select>
+                    </div>  
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                        <input class="btn btn-default" type="button" disabled value="Добавить" />
+                        <button class="btn btn-default" ng-click="closedModal(text, date)">Отмена</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div ng-if="state"> 
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Сделать</th>
+                            <th>Ответственный</th>
+                            <th>Дата</th>
+                            <th>Сделано</th>
+                        </tr>
+                    </thead>
+                    <tbody tbody-directive = "2">
+                        <tr ng-repeat="item in filtredArr | sortTodos: sortState | sortWorker: sortWorkerState">
+                            <td>{{item.text}}</td>
+                            <td>{{item.worker}}</td>
+                            <td>{{item.date}}</td>
+                            <td><input type="checkbox" ng-model="item.done" /></td>
+                            <td><button class="btn btn-info" ng-click="updateItem(item)">Редактировать</button>
+                            <button class="btn btn-danger" ng-click="deleteItem(item)">Удалить</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        <div class="form-inline">
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <button class="btn btn-primary" ng-click="showModal()">Добавить задачу</button>
+                </div>
+            </div>
+                
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                <p style="display: inline-block;">Show:</p>
+                    <select ng-model="sortState" class="form-control">
+                        <option value="All">All</option>
+                        <option value="Done">Done</option>
+                        <option value="Undone">Undone</option> 
+                    </select>                   
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                <p style="display: inline-block;">Worker:</p>
+                    <select ng-model="sortWorkerState" class="form-control">
+                        <option value="All">All</option>
+                        <option value="Джон">Джон</option>
+                        <option value="Иван">Иван</option>
+                        <option value="Джэк">Джэк</option>  
+                    </select>                   
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </div>
+</div>
+            
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
