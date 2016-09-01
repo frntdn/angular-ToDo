@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="purchaseApp">
+<html ng-app="app">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -33,7 +33,7 @@
 
 </style>
 </head>
-<body ng-controller="purchaseController">
+<body ng-controller="mainCtrl">
     
     <div class="page-header">
         <h1> ToDo список </h1>
@@ -41,20 +41,27 @@
 
     <div class="panel">
         <div ng-if="!state">
-            <form class="form-inline" novalidate name="addItemForm" ng-submit="addItem()">
+            <form class="form-inline" novalidate name="addItemForm">
                 <div class="form-group">
                     <div class="col-md-8">
-                        <input class="form-control" name="myInput" ng-model="editedItem.text" placeholder="Название" add-item-form-directive/>
+                        <input class="form-control" name="myInput" ng-model="editedItem.text" placeholder="Название" 
+                        minlength="10" maxlength="100" required />
+                        <span ng-show="addItemForm.myInput.$error.required">min=10, max=100</span> 
+                        <span ng-show="addItemForm.myInput.$error.minlength">OMG, so min</span> 
+                        <span ng-show="addItemForm.myInput.$error.maxlength">OMG, too max</span> 
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-6">
-                        <input type="text" class="form-control" ng-model="editedItem.date" placeholder="Дата" add-item-form-directive/>
+                        <input class="form-control" name="myDate" ng-model="editedItem.date" placeholder="Дата" 
+                        pattern="\d\d.\d\d.\d\d\d\d" required/>
+                        <span ng-show="addItemForm.myDate.$error.required">date-format = dd.mm.yyyy </span>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-8">
-                        <select name="" class="form-control" placeholder="Ответственный" ng-model="editedItem.worker" add-item-form-directive>
+                        <select name="" class="form-control" placeholder="Ответственный" ng-model="editedItem.worker"
+                        required>
                             <option value="Джон">Джон</option>
                             <option value="Иван">Иван</option>
                             <option value="Джэк">Джэк</option> 
@@ -63,7 +70,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-8">
-                        <input class="btn btn-default" type="button" disabled value="Добавить" />
+                        <input class="btn btn-default" type="button" ng-disabled="addItemForm.$invalid" value="Добавить" ng-click="addItem()" />
                         <button class="btn btn-default" ng-click="closedModal(text, date)">Отмена</button>
                     </div>
                 </div>

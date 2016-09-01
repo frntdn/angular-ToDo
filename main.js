@@ -1,11 +1,10 @@
-var purchaseApp = angular.module("purchaseApp", []);
-	purchaseApp.constant("baseUrl", "https://todo-angular-34477.firebaseio.com/items.json");
-    purchaseApp.factory('dataService',  dataService);
-    purchaseApp.controller("purchaseController", purchaseController);
-    purchaseApp.directive("addItemFormDirective", addItemFormDirective);
-    purchaseApp.directive("tbodyDirective", tbodyDirective);
-    purchaseApp.filter('sortTodos', sortTodos);
-    purchaseApp.filter('sortWorker', sortWorker);
+var app = angular.module("app", []);
+	app.constant("baseUrl", "https://todo-angular-34477.firebaseio.com/items.json");
+    app.factory('dataService',  dataService);
+    app.controller("mainCtrl", mainCtrl);
+    app.directive("tbodyDirective", tbodyDirective);
+    app.filter('sortTodos', sortTodos);
+    app.filter('sortWorker', sortWorker);
 
     function dataService($http, $q){
         return {
@@ -102,67 +101,8 @@ var purchaseApp = angular.module("purchaseApp", []);
 	    	}
     	}
     }
-
-    function addItemFormDirective(){
-    	// Проверка на коротку строку
-    	var isValidText = function(s){
-    		return s && s.length > 9;
-    	}
-
-        var isValidDate = function(d){
-            var temp = d.split('.');
-
-            if ( temp.length === 3 ) {
-
-                var a = /\d\d/.test(+temp[0]);
-                var b = /\d\d/.test(+temp[1])
-                var c = /\d\d\d\d/.test(+temp[2])
-                
-                return a && b && c;
-            }
-
-            return false;
-        }
-
-    	return {
-
-            require: "ngModel",
-
-    		link: function(scope, element, attrs){
-    			//Scope = область видимости, в которой вызывается директива
-    			//element = DOM элемент, которому принадлежит директива
-    			//attrs = объект со списком атрибута тэга
-				var textValid = angular.element( '<p>' );
-                var dateValid = angular.element( '<p>' );
-    			element.parent().append( textValid );
-                element.parent().append( dateValid );
-                console.log(element);
-    			scope.$watch('editedItem', function( newValue, oldValue ){
-    				if( isValidText( newValue.text ) && isValidDate( newValue.date ) ) {
-                        console.log('BRAVISSIMO!');
-                        scope.$invalid = false;
-                        // find
-                        // removeAttr
-    					// console.log('Длина текста меньше 10');
-    					// element.css( "background-color", "red" );
-    					// textValid.text( 'Подробно опишите задачу' );
-
-    				} else {
-    					// console.log('Браво! Вы разобрались с директивой');
-    					// element.css( "background-color", "white" );
-    					// textValid.text('');
-                        scope.$digest();
-    				}
-    			}, true);
-    					
-    		},
-
-    		restrict: "EA"
-
-    	}
-    }
     
-    function purchaseController($scope, baseUrl, $http, $window, $filter, dataService) {
+    function mainCtrl($scope, baseUrl, $http, $window, $filter, dataService) {
 
     if ( sessionStorage.getItem('todos') ){
 
