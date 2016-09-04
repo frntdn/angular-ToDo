@@ -1,37 +1,11 @@
 <!doctype html>
-<html ng-app="app">
+<html ng-app="myApp">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<style>
-    
-    /*Правильная форма*/
-    input.ng-valid {
-
-    }
-
-    /*Плохая форма*/
-    input.ng-invalid {
-        background-color: red;
-    }
-
-    /*Целомудренная форма*/
-    input.ng-pristine{
-        border: dotted;
-    }
-
-    /*Пользованная форма*/
-    input.ng-dirty{
-        border: dashed;
-    }
-
-    .hideBtn {
-        display: none;
-    }
-
-</style>
+<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body ng-controller="mainCtrl">
     
@@ -46,7 +20,9 @@
                     <div class="col-md-8">
                         <input class="form-control" name="myInput" ng-model="editedItem.text" placeholder="Название" 
                         minlength="10" maxlength="100" required />
-                        <span ng-show="addItemForm.myInput.$error.required">min=10, max=100</span> 
+<!--                         <span >{{addItemForm.myInput.$error}}</span>
+                        <span >{{addItemForm.myInput.$valid}}</span> -->  
+                        <span ng-show="addItemForm.myInput.$error.required">min = 10, max = 100</span>
                         <span ng-show="addItemForm.myInput.$error.minlength">OMG, so min</span> 
                         <span ng-show="addItemForm.myInput.$error.maxlength">OMG, too max</span> 
                     </div>
@@ -60,16 +36,17 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-8">
-                        <select name="" class="form-control" placeholder="Ответственный" ng-model="editedItem.worker"
+                        <select name="myWorker" class="form-control form-control__select" placeholder="Ответственный" ng-model="editedItem.worker"
                         required>
                             <option value="Джон">Джон</option>
                             <option value="Иван">Иван</option>
                             <option value="Джэк">Джэк</option> 
                         </select>
+                        <span ng-show="addItemForm.myWorker.$error.required">You must select worker.</span>
                     </div>  
                 </div>
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-8">
+                    <div class="col-md-offset-2 col-md-12">
                         <input class="btn btn-default" type="button" ng-disabled="addItemForm.$invalid" value="Добавить" ng-click="addItem()" />
                         <button class="btn btn-default" ng-click="closedModal(text, date)">Отмена</button>
                     </div>
@@ -81,23 +58,25 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Сделать</th>
-                            <th>Ответственный</th>
-                            <th>Дата</th>
-                            <th>Сделано</th>
+                            <th style="width: 25%">Сделать</th>
+                            <th style="width: 10%">Ответственный</th>
+                            <th style="width: 10%">Дата</th>
+                            <th style="width: 15%">Сделано</th>
+                            <th style="width: 40%">Управление</th>
                         </tr>
                     </thead>
-                    <tbody tbody-directive = "2">
+                    <tbody>
                         <tr ng-repeat="item in filtredArr | sortTodos: sortState | sortWorker: sortWorkerState">
                             <td>{{item.text}}</td>
                             <td>{{item.worker}}</td>
                             <td>{{item.date}}</td>
-                            <td><input type="checkbox" ng-model="item.done" /></td>
+                            <td><input type="checkbox" ng-model="item.done" ng-change="isDoneItem(item)" /></td>
                             <td><button class="btn btn-info" ng-click="updateItem(item)">Редактировать</button>
                             <button class="btn btn-danger" ng-click="deleteItem(item)">Удалить</button></td>
                         </tr>
                     </tbody>
                 </table>
+                <show-more></show-more>    
             </div>
 
         <div class="form-inline">
@@ -138,6 +117,14 @@
             
  
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-<script src="main.js"></script>
+<script src="app.module.js"></script>
+<script src="constants.js"></script>
+<script src="requesthandler.service.js"></script>
+<script src="dataService.factory.js"></script>
+<script src="mainCtrl.controller.js"></script>
+<script src="showMore.directive.js"></script>
+<script src="sortTodos.filter.js"></script>
+<script src="sortWorker.filter.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,41 @@
+	.btn_show-more {
+        margin : 0 auto;
+        display: block;
+        width: 20%;
+    }
+
+    /*Плохая форма*/
+    input.ng-invalid {
+        background-color: red;
+    }
+
+    /*Целомудренная форма*/
+    input.ng-pristine{
+        border: dotted;
+    }
+
+    /*Пользованная форма*/
+    input.ng-dirty{
+        border: dashed;
+    }
+
+    span {
+        display: block;
+        width: 200px;
+    }
+
+    select.form-control.form-control__select {
+        width: 150px;
+    }
+
+    th {
+    text-align: center;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    td:first-child{
+        text-align: left;
+    }
